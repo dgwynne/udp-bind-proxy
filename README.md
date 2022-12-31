@@ -9,7 +9,7 @@ The Nintendo Switch does not appear to use existing technologies
 such as UPnP (Universal Plug and Play) or STUN (Session Traversal
 Utilities for NAT) to support online multiplayer gaming. Instead,
 they appear to rely on IP network socket semantics that haven't
-worked reliably on the Internet since the late 80's.
+worked reliably on the Internet since the early 90's.
 
 To work around this, the official Nintendo support documentation
 instructs people to configure their home network routers to forward
