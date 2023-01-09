@@ -70,13 +70,18 @@ appear to be 198.51.100.77:61185 -> 203.0.113.12:2961 on the Internet.
 **Warning:** This is very rough code. If it works, great. If it
 doesn't, then go read the LICENSE again.
 
+`udp-bind-proxy` is set up to intercept all outgoing UDP packets
+from a Nintendo Switch. One a UDP packet has been intercepted, it
+injects rules into a pf(4) anchor to catch incoming connections to
+the UDP source port, and then sends the original packet on to the
+destination.
+
 ### Deployment considerations
 
-This proxy intercepts all outgoing UDP packets and opens up all UDP
-connections from the destination host. It is recommended to limit
-the interception to specific devices, ie, only do it for Nintendo
-Switches, not for everything. If possible, try to isolate Nintendo
-Switch devices into their own network segment.
+It is recommended to limit the interception to specific devices,
+ie, only do it for Nintendo Switches, not for everything. If possible,
+try to isolate Nintendo Switch devices into their own network
+segment.
 
 [CVE-2022-47949](https://cve.report/CVE-2022-47949) adds weight to
 that suggestion.
@@ -89,13 +94,7 @@ directory for now.
 
 ### Configuration
 
-`udp-bind-proxy` is set up to intercept all outgoing UDP packets
-from a Nintendo Switch. One a UDP packet has been intercepted, it
-injects rules into a pf(4) anchor to catch incoming connections to
-the UDP source port, and then sends the original packet on to the
-destination.
-
-This requires two chunks of configuration in
+`udp-bind-proxy` requires two chunks of configuration in
 [`pf.conf(5)`](https://man.openbsd.org/pf.conf.5). The first chunk
 redirects connections from the Switch to the proxy:
 
