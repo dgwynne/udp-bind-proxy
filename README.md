@@ -107,7 +107,7 @@ Once the ruleset has been updated and loaded, you can run the proxy
 in the foreground (for now):
 
 ```
-dlg@router $ doas ./obj/udp-bind-proxy -u _ppp
+dlg@router udp-bind-proxy$ doas ./obj/udp-bind-proxy -u _ppp
 ```
 
 ### Problems?
