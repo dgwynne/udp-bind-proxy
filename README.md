@@ -64,3 +64,52 @@ router so it appears to be 198.51.100.77:52811 -> 203.0.113.12:2961.
 The Switch seems fine with a router rewriting the source IP, but
 expects source port to remain the same, ie, it wants the packet to
 appear to be 198.51.100.77:61185 -> 203.0.113.12:2961 on the Internet.
+
+## The solution
+
+**Warning:** This is very rough code. If it works, great. If it
+doesn't, then go read the LICENSE again.
+
+### Building
+
+Clone this repo and run `make obj` and `make` to build the source.
+It's not ready to be installed yet, just run it out of the build
+directory for now.
+
+### Configuration
+
+`udp-bind-proxy` is set up to intercept all outgoing UDP packets
+from a Nintendo Switch. One a UDP packet has been intercepted, it
+injects rules into a pf(4) anchor to catch incoming connections to
+the UDP source port, and then sends the original packet on to the
+destination.
+
+This requires two chunks of configuration in
+[`pf.conf(5)`](https://man.openbsd.org/pf.conf.5). The first chunk
+redirects connections from the Switch to the proxy:
+
+```
+pass in on $internal_if inet proto udp \
+    from $switch_ip to port >= 1024 divert-to 127.0.0.1 port 1717
+```
+
+The second chunk provides an anchor for `udp-bind-proxy` to populate
+with rules allowing the incoming connections back to the Switch:
+
+```
+anchor "udp-bind-proxy/*" in on $external_if
+pass in quick tagged nxudp
+```
+
+### Running
+
+Once the ruleset has been updated and loaded, you can run the proxy
+in the foreground (for now):
+
+```
+dlg@router $ doas ./obj/udp-bind-proxy -u _ppp
+```
+
+### Problems?
+
+Probably. Good luck.
