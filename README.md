@@ -70,7 +70,7 @@ appear to be 198.51.100.77:61185 -> 203.0.113.12:2961 on the Internet.
 **Warning:** This is very rough code. If it works, great. If it
 doesn't, then go read the LICENSE again.
 
-### Security considerations
+### Deployment considerations
 
 This proxy intercepts all outgoing UDP packets and opens up all UDP
 connections from the destination host. It is recommended to limit
